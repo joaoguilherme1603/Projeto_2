@@ -2,7 +2,6 @@
 import { ref } from 'vue'
 
 //Jogos
-
 const jogos = ref ([
     {
         id: 1,
@@ -67,9 +66,7 @@ const jogos = ref ([
     },
 ])
 
-//Carrinho
-
-const carrinho = ref ([
+/* const carrinho = ref ([
 {
         id: 1,
         nome: 'DOOM Eternal',
@@ -91,16 +88,24 @@ const carrinho = ref ([
         preco: 299.90,
         valorTotal: 299.99
     },
-])
-</script>
+]) */
 
+</script>
 <template>
-  <div class="container site-gamer"></div>
- <div class="tema">
+ <div class="tema col-3">
+    <div v-for="(jogo, id) in jogos" :key="id">{{ id }}: {{ jogo.nome }}>
   <h1>Games Disponiveis:</h1>
-  <hr>
-  <p v-for="(jogos, id) in jogos" :key="id">{{ id }}: {{ jogos.nome }}</p>
-  <p v-for="(carrinho, id) in carrinho" :key="id">{{ id }}: {{ carrinho.nome }}
+  <hr>  
+  <b>{{ jogos.id }} - {{ jogos.nome }}</b>
+  <br>
+  <h6>Preço: {{ jogos.preco }}</h6>
+  <h6>Quantidade:{{ jogos.quantidade }}</h6>
+  <p v-for="(jogo, id) in jogos" :key="id">{{ id }}: {{ jogo.nome }}</p>
+  <p v-for="(carrinho, id) in carrinho" :key="id">{{ id }}: {{ carrinho.nome }}</p>
+  <button type="button" class="button">-</button>
+  <button type="button" class="button">Add</button>
+  <button type="button" class="button">+</button>
+ </div>
  </div>
 </template>
 
@@ -153,5 +158,8 @@ li {
   margin: 15px 15px 15px 15px;
   color: white;
   font-family: 'Bruno Ace SC', cursive;
+}
+hr {
+    color: white;
 }
 </style>
