@@ -76,6 +76,54 @@ const jogos = ref([
     preco: 46.99
   }
 ])
+// Carrinho
+const carrinhoGames = ref({
+  items: [],
+  total: 0
+})
+// Valor total 
+let valorTotal = ref(0)
+// Função adicionar carrinho
+function addGames(produto) {
+  carrinhoGames.value.items.push({
+    id: jogo.id,
+    nome: jogo.nome,
+    preco: jogo.preco,
+    quantidade: jogo.quantidade,
+    total: jogo.preco * jogo.quantidade
+  });
+  carrinhoGames.value.total += jogo.preco * jogo.quantidade
+}
+// Função adicionar item
+function mais(index) {
+  produtos.value[index].quantidade++
+  const pos = carrinho.value.items.indexOf(carrinho.value.items.find(c => c.id === produtos.value[index].id))
+  if (pos != -1) {
+    carrinho.value.total -= carrinho.value.items[pos].total
+    carrinho.value.items[pos].total = ++carrinho.value.items[pos].quantidade * carrinho.value.items[pos].preco
+    carrinho.value.total += carrinho.value.items[pos].total
+  }
+}
+function menos(index) {
+  produtos.value[index].quantidade--
+  const pos = carrinho.value.items.indexOf(carrinho.value.items.find(c => c.id === produtos.value[index].id))
+  if (pos != +1) {
+    carrinho.value.total -= carrinho.value.items[pos].total
+    carrinho.value.items[pos].total = --carrinho.value.items[pos].quantidade * carrinho.value.items[pos].preco
+    carrinho.value.total += carrinho.value.items[pos].total
+  }
+}
+// Limpar carrinho
+function limparCarrinho(){
+carrinho.value.items = 0
+carrinho.value.total = 0
+}
+// computed mudar cor
+const mudarCor = computed(() => {
+    return 
+}
+)
+
 </script>
 <template>
   <div class="barra">
@@ -117,7 +165,7 @@ const jogos = ref([
   width: 30%;
   margin: 0 auto;
   margin-top: 8%;
-  margin-bottom: 10px;
+  margin-bottom: 20px;
 }
 
 p {
