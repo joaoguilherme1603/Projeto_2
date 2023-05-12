@@ -76,60 +76,90 @@ const jogos = ref([
     preco: 46.99
   }
 ])
-// Carrinho
-const carrinhoGames = ref({
+
+const carrinhoGamer = ref({
   items: [],
   total: 0
 })
-// Valor total 
+
 let valorTotal = ref(0)
-// Função adicionar carrinho
-function addGames(produto) {
-  carrinhoGames.value.items.push({
+
+function addCarrinho(jogo) {
+  carrinhoGamer.value.items.push({
     id: jogo.id,
     nome: jogo.nome,
     preco: jogo.preco,
     quantidade: jogo.quantidade,
     total: jogo.preco * jogo.quantidade
   });
-  carrinhoGames.value.total += jogo.preco * jogo.quantidade
+  carrinhoGamer.value.total += jogo.preco * jogo.quantidade
 }
-// Função adicionar item
+
 function mais(index) {
-  produtos.value[index].quantidade++
-  const pos = carrinho.value.items.indexOf(carrinho.value.items.find(c => c.id === produtos.value[index].id))
+  jogos.value[index].quantidade++
+  const pos = carrinhoGamer.value.items.indexOf(carrinhoGamer.value.items.find(c => c.id === jogos.value[index].id))
   if (pos != -1) {
-    carrinho.value.total -= carrinho.value.items[pos].total
-    carrinho.value.items[pos].total = ++carrinho.value.items[pos].quantidade * carrinho.value.items[pos].preco
-    carrinho.value.total += carrinho.value.items[pos].total
+    carrinhoGamer.value.total -= carrinhoGamer.value.items[pos].total
+    carrinhoGamer.value.items[pos].total = ++carrinhoGamer.value.items[pos].quantidade * carrinhoGamer.value.items[pos].preco
+    carrinhoGamer.value.total += carrinhoGamer.value.items[pos].total
+
   }
 }
+
 function menos(index) {
-  produtos.value[index].quantidade--
-  const pos = carrinho.value.items.indexOf(carrinho.value.items.find(c => c.id === produtos.value[index].id))
+  jogos.value[index].quantidade--
+  const pos = carrinhoGamer.value.items.indexOf(carrinhoGamer.value.items.find(c => c.id === jogos.value[index].id))
+
+
   if (pos != +1) {
-    carrinho.value.total -= carrinho.value.items[pos].total
-    carrinho.value.items[pos].total = --carrinho.value.items[pos].quantidade * carrinho.value.items[pos].preco
-    carrinho.value.total += carrinho.value.items[pos].total
+    carrinhoGamer.value.total -= carrinhoGamer.value.items[pos].total
+    carrinhoGamer.value.items[pos].total = --carrinhoGamer.value.items[pos].quantidade * carrinhoGamer.value.items[pos].preco
+    carrinhoGamer.value.total += carrinhoGamer.value.items[pos].total
   }
 }
-// Limpar carrinho
-function limparCarrinho(){
-carrinho.value.items = 0
-carrinho.value.total = 0
+
+function limparGamer(){
+carrinhoGamer.value.items = []
+carrinhoGamer.value.total = 0
 }
-// computed mudar cor
-const mudarCor = computed(() => {
-    return 
-}
-)
 
 </script>
-<template>
+
+<template>    
+    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+          <div class="modal-header">
+            <p class="modal-title fs-5" id="exampleModalLabel">Games:</p>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <div v-for="(carrinhoItem, index) in carrinhoGamer.items" :key="index">              
+              <strong> {{ carrinhoItem.id }} - {{ carrinhoItem.nome }}</strong>
+              <hr>
+              <p>Preço BRL: {{ carrinhoItem.preco }} </p> 
+              <p>Quantidade: {{ carrinhoItem.quantidade }} </p>
+              <p>Preço: {{ carrinhoItem.total }}</p>
+            </div>
+            
+            <p v-if="carrinhoGamer.items.length > 0">Total: {{ carrinhoGamer.total }} BRL</p>
+            <p v-else>Nenhum Item</p>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            <button @click="limparGamer" type="button" class="btn btn-warning">Clear</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
   <div class="barra">
     <h1>PsychGaming</h1>
   </div>
   <div class="container">
+    <button type="button" class="btn btn-primary p-3 mt-2 " data-bs-toggle="modal" data-bs-target="#exampleModal">
+      🛒 Carrinho
+    </button>
     <div class="row">
       <div v-for="(jogo, index) in jogos" :key="jogo.id" class="tema col-3">
         <h1>{{ jogo.id }} - {{ jogo.nome }}</h1>
@@ -138,7 +168,7 @@ const mudarCor = computed(() => {
         <h6>Quantidade: {{ jogo.quantidade }}</h6>
 
         <button type="button" @click="menos(index)" class="button">-</button>
-        <button type="button" @click="addCarrinho(index)" class="button">Add</button>
+        <button type="button" @click="addCarrinho(jogo)" class="button">Add</button>
         <button type="button" @click="mais(index)" class="button">+</button>
       </div>
     </div>
@@ -169,9 +199,8 @@ const mudarCor = computed(() => {
 }
 
 p {
-  background-color: black;
   margin: 10px 10px 10px 10px;
-  color: white;
+  color: black;
   font-family: monospace;
   font-family: 'Bruno Ace SC', cursive;
 }
@@ -185,6 +214,12 @@ button {
   margin: 10px 10px 10px 10px;
   cursor: pointer;
   font-family: 'Bruno Ace SC', cursive;
+  border-color: black;
+}
+
+button:hover {
+  background-color: grey;
+  border-color: grey;
 }
 
 h1 {
