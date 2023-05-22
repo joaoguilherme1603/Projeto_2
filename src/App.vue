@@ -186,7 +186,7 @@ function limparGamer() {
   </div>
 
   <!-- Codigo da Loja: -->
-  <div class="barra" img src="cuhead.jpeg">
+  <div class="barra">
     <h1>PsychGaming</h1>
   </div>
   <div class="container">
